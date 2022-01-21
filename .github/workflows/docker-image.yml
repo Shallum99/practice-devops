@@ -29,7 +29,7 @@ jobs:
       run: |
         docker build . 
     - name: Docker Tag
-      run: Docker Tag healthcare-demo ${{secrets.DOCKER_USERNAME}}/healthcare-demo
+      run: docker tag healthcare-demo ${{secrets.DOCKER_USERNAME}}/healthcare-demo
     - name: Docker Push
       run: docker push ${{secrets.DOCKER_USERNAME}}/healthcare-demo
   
