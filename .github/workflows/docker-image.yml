@@ -24,7 +24,7 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the Docker image
       run: |
-        docker-image build 
+        docker build . 
     - name: Docker Tag
       run: docker tag healthcare-demo ${{secrets.DOCKER_USERNAME}}/healthcare-demo
     - name: Docker Push
