@@ -8,6 +8,7 @@ on:
 
 jobs:
 
+
   build:
 
     runs-on: ubuntu-latest
@@ -15,4 +16,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        SECRET_KEY: ${{secrets.SECRET_KEY}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: Build the Docker image
+      run: |
+        docker-compose build 
+    - name: Docker Tag
+      run: docker tag healthcare-demo ${{secrets.DOCKER_USERNAME}}/healthcare-demo
+    - name: Docker Push
+      run: docker push ${{secrets.DOCKER_USERNAME}}/healthcare-demo
+  
