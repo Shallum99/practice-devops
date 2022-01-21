@@ -8,28 +8,23 @@ on:
 
 jobs:
 
-
   build:
 
     runs-on: ubuntu-latest
-    defaults:
-      run:
+    defaults: 
+      run: 
         working-directory: ./backend
-
+  
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      env:
-        DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+    - name: setting up docker_username and password
+      env: 
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        SECRET_KEY: ${{secrets.SECRET_KEY}}
-      run: |
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    
     - name: Build the Docker image
-      run: |
-        docker build . 
-    - name: Docker Tag
-      run: docker tag healthcare-demo ${{secrets.DOCKER_USERNAME}}/healthcare-demo
-    - name: Docker Push
+      run: docker build -t ${{secrets.DOCKER_USERNAME}}/healthcare-demo .
+    - name: Pushing the image to docker hub
       run: docker push ${{secrets.DOCKER_USERNAME}}/healthcare-demo
-  
